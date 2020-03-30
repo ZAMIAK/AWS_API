@@ -1,3 +1,12 @@
+<style scoped>
+.video{
+  width: 100%;
+}
+.wrapper{
+  margin: 0 auto;
+  width: 1000px;
+}
+</style>
 <template>
   <v-app id="inspire">
     <v-navigation-drawer
@@ -10,15 +19,7 @@
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Contact</v-list-item-title>
+            <v-list-item-title>Acceuil</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -30,57 +31,11 @@
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>Video player</v-toolbar-title>
     </v-app-bar>
 
-    <v-content>
-      <v-card
-    max-width="600"
-    class="mx-auto"
-  >
-    <v-toolbar
-      color="light-blue"
-      dark
-    >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-      <v-toolbar-title>My files</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-view-module</v-icon>
-      </v-btn>
-    </v-toolbar>
-
-    <v-list subheader>
-      <v-subheader inset>Files</v-subheader>
-
-      <v-list-item
-        v-for="item in nomFichier"
-        :key="item.id"
-      >
-        <v-list-item-avatar>
-           <v-icon color="blue darken-2">mdi-message-text</v-icon>
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title v-text="item"></v-list-item-title>
-          <!-- <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle> -->
-        </v-list-item-content>
-
-        <!-- <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey lighten-1">mdi-information</v-icon>
-          </v-btn>
-        </v-list-item-action> -->
-      </v-list-item>
-    </v-list>
-  </v-card>
+    <v-content class="wrapper">
+      <video src="./assets/golimar.mp4" controls class="video"></video>
     </v-content>
     <v-footer
       color="indigo"
@@ -91,6 +46,7 @@
   </v-app>
 </template>
 <script>
+
 export default {
     name: 'todos',
     props: {
@@ -98,18 +54,18 @@ export default {
     },
     data(){
         return{
-            nomFichier: null,
-            drawer: null
+            videoLink: null,
+            drawer: false
         }
     },
     methods:{
-      async getAllfiles(){
+      async getVideo(){
         let response = await this.$http.get("https://czrnafchb7.execute-api.eu-west-3.amazonaws.com/mrcfa/")
-        this.nomFichier = JSON.parse(response.data.body)
+        this.videoLink = JSON.parse(response.data.body)
       }
     },
     mounted(){
-        this.getAllfiles()
+        this.getVideo()
     }
 }
 </script>
